@@ -196,20 +196,22 @@ const Billing = () => {
           <div>
             <label>Tax Rate (%)</label>
             <input
-              type="number"
-              value={taxRate}
-              onChange={(e) => setTaxRate(parseFloat(e.target.value))}
-              className="border p-2 w-full rounded"
-            />
+  type="number"
+  value={taxRate}
+  readOnly
+  className="border p-2 w-full rounded bg-gray-100 cursor-not-allowed"
+/>
+
           </div>
           <div>
             <label>Discount (₹)</label>
             <input
-              type="number"
-              value={discount}
-              onChange={(e) => setDiscount(parseFloat(e.target.value))}
-              className="border p-2 w-full rounded"
-            />
+  type="number"
+  value={discount}
+  readOnly
+  className="border p-2 w-full rounded bg-gray-100 cursor-not-allowed"
+/>
+
           </div>
           <div>
             <label>Insurance (₹)</label>

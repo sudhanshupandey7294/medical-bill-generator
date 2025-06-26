@@ -4,6 +4,7 @@ const dotenv = require("dotenv");
 const connectDB = require("./config/db");
 
 
+
 dotenv.config();
 connectDB();
 
@@ -19,6 +20,8 @@ app.use("/api/admin", require("./routes/admin"));
 
 
 app.use("/api/settings", require("./routes/settings"));
+
+
 
 
 const PORT = process.env.PORT || 5000;
