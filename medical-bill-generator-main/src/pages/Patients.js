@@ -115,7 +115,7 @@ const Patients = () => {
 
       <div>
         <h3 className="text-lg font-medium mb-2">Registered Patients</h3>
-        <table className="w-full border text-sm">
+        {/* <table className="w-full border text-sm">
           <thead className="bg-gray-100">
             <tr>
               <th className="border px-2 py-1">Name</th>
@@ -141,17 +141,46 @@ const Patients = () => {
                   >
                     Edit
                   </button>
-                  {/* <button
-                    onClick={() => handleDelete(patient._id)}
-                    className="text-red-500 hover:underline"
-                  >
-                    Delete
-                  </button> */}
+                 
                 </td>
               </tr>
             ))}
           </tbody>
-        </table>
+        </table> */}
+        <div className="w-full overflow-x-auto">
+  <table className="w-full min-w-[600px] border text-sm">
+    <thead className="bg-gray-100">
+      <tr>
+        <th className="border px-2 py-1">Name</th>
+        <th className="border px-2 py-1">Age</th>
+        <th className="border px-2 py-1">Gender</th>
+        <th className="border px-2 py-1">Contact</th>
+        <th className="border px-2 py-1">Insurance</th>
+        <th className="border px-2 py-1">Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      {patients.map((patient) => (
+        <tr key={patient._id} className="hover:bg-gray-50">
+          <td className="border px-2 py-1">{patient.name}</td>
+          <td className="border px-2 py-1">{patient.age}</td>
+          <td className="border px-2 py-1">{patient.gender}</td>
+          <td className="border px-2 py-1">{patient.contact}</td>
+          <td className="border px-2 py-1">{patient.insurance}</td>
+          <td className="border px-2 py-1 space-x-2">
+            <button
+              onClick={() => handleEdit(patient._id)}
+              className="text-blue-500 hover:underline"
+            >
+              Edit
+            </button>
+          </td>
+        </tr>
+      ))}
+    </tbody>
+  </table>
+</div>
+
       </div>
     </motion.div>
   );
