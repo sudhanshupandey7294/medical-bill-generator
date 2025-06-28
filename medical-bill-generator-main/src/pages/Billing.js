@@ -38,7 +38,9 @@ const Billing = () => {
     axios.get("http://localhost:5000/api/settings").then((res) => {
       setTaxRate(res.data.taxRate);
       setDiscount(res.data.defaultDiscount);
-      setLogo(res.data.logo);
+      // setLogo(res.data.logo);
+      setLogo(res.data.logoUrl); 
+
     });
   }, []);
 
@@ -55,27 +57,44 @@ const Billing = () => {
   const tax = (subtotal * taxRate) / 100;
   const total = subtotal + tax - discount - insurance;
 
-  const generatePDF = () => {
-    const doc = new jsPDF();
-    const patient = patients.find((p) => p._id === selectedPatientId);
-    const date = new Date().toLocaleDateString();
 
-    if (!patient) {
-      alert("Please select a valid patient.");
-      return;
-    }
+const generatePDF = () => {
+  const doc = new jsPDF();
+  const patient = patients.find((p) => p._id === selectedPatientId);
+  const date = new Date().toLocaleDateString();
 
-    if (logo) {
-      const img = new Image();
-      img.src = logo;
-      img.onload = function () {
-        doc.addImage(img, "PNG", 150, 10, 40, 20);
-        generatePDFContent(doc, patient, date);
-      };
-    } else {
+  if (!patient) {
+    alert("Please select a valid patient.");
+    return;
+  }
+
+  // Check if logoUrl exists and is valid base64
+  if (logo && logo.startsWith("data:image")) {
+    const img = new Image();
+    img.src = logo;
+
+    img.onload = () => {
+      // Convert canvas for browser compatibility (png/jpg)
+      const canvas = document.createElement("canvas");
+      canvas.width = img.width;
+      canvas.height = img.height;
+      const ctx = canvas.getContext("2d");
+      ctx.drawImage(img, 0, 0);
+
+      const imageData = canvas.toDataURL("image/png"); // convert to png safely
+
+      doc.addImage(imageData, "PNG", 150, 10, 40, 20); // ✅ Use converted base64 PNG
       generatePDFContent(doc, patient, date);
-    }
-  };
+    };
+
+    img.onerror = () => {
+      console.warn("Failed to load image. Skipping logo.");
+      generatePDFContent(doc, patient, date); // fallback
+    };
+  } else {
+    generatePDFContent(doc, patient, date); // fallback if no logo
+  }
+};
 
   const generatePDFContent = (doc, patient, date) => {
     // Header
